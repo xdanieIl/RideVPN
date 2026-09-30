@@ -1,0 +1,28 @@
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: darkslategray;
+}
+
+form {
+    border: 2px solid black;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.container {
+    border: 3px;
+}
+
+.container img {
+    margin-top: 200px;
+    width: 200px;
+    height: 200px;
+}
+
+.container button {
+    margin-top: 5px;
+}
