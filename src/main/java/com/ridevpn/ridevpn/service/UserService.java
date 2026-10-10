@@ -5,6 +5,8 @@ import com.ridevpn.ridevpn.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -23,5 +25,13 @@ public class UserService {
     public void register(String username, String email, String password) {
         User user = new User(username, email, passwordEncoder.encode(password));
         userRepository.save(user);
+    }
+
+    public boolean checkLogin(String username, String password) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isEmpty()) {
+            return false;
+        }
+        return passwordEncoder.matches(password, user.get().getPasswordHash());
     }
 }

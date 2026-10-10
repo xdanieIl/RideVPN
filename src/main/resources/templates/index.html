@@ -10,11 +10,13 @@
 <div class="container">
     <img th:src="@{/images/ridevpn-logo.png}" alt="logo">
 
-    <form>
-        <input type="text" placeholder="Username"> <br>
-        <input type="text" placeholder="Password"> <br>
+    <p th:if="${message}" th:text="${message}" style="color: white;"></p>
 
-        <button type="button">Login</button>
+    <form th:action="@{/login}" method="post">
+        <input type="text" name="username" placeholder="Username" required> <br>
+        <input type="password" name="password" placeholder="Password" required> <br>
+
+        <button type="submit">Login</button>
         <button type="button" onclick="location.href='/register'">Register</button>
     </form>
 </div>
