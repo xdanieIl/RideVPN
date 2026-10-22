@@ -30,6 +30,12 @@ public class User {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
+    @Column(name = "vpn_ip", unique = true)
+    private String vpnIp;
+
+    @Column(name = "wg_public_key")
+    private String wgPublicKey;
+
     protected User() {}
 
     public User(String username, String email, String passwordHash) {
