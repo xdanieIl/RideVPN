@@ -80,4 +80,20 @@ public class User {
     public Instant getCreatedAt() {
         return createdAt;
     }
+
+    public String getVpnIp() {
+        return vpnIp;
+    }
+
+    public void setVpnIp(String vpnIp) {
+        this.vpnIp = vpnIp;
+    }
+
+    public String getWgPublicKey() {
+        return wgPublicKey;
+    }
+
+    public void setWgPublicKey(String wgPublicKey) {
+        this.wgPublicKey = wgPublicKey;
+    }
 }
