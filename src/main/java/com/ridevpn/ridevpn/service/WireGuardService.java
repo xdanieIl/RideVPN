@@ -2,6 +2,7 @@ package com.ridevpn.ridevpn.service;
 
 import com.ridevpn.ridevpn.model.User;
 import com.ridevpn.ridevpn.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -11,13 +12,16 @@ import java.util.List;
 @Service
 public class WireGuardService {
 
-    private static final String SERVER_PUBLIC_KEY = "hkSPVh2QjTP+7yhUxMZLF0Aga7kl8e8rksLf3j4yem8="; // Wireguard public key. "wg show wg0 public-key"
-    private static final String SERVER_PUBLIC_IP = "54.165.133.41:51820"; // This might change
-
     private final UserRepository userRepository;
+    private final String serverPublicKey; // from WG_SERVER_PUBLIC_KEY in the env file
+    private final String serverPublicIp;  // from WG_ENDPOINT in the env file
 
-    public WireGuardService(UserRepository userRepository) {
+    public WireGuardService(UserRepository userRepository,
+                            @Value("${wireguard.server-public-key}") String serverPublicKey,
+                            @Value("${wireguard.endpoint}") String serverPublicIp) {
         this.userRepository = userRepository;
+        this.serverPublicKey = serverPublicKey;
+        this.serverPublicIp = serverPublicIp;
     }
 
     // Makes a new VPN config for the user and returns it as text
@@ -91,7 +95,7 @@ public class WireGuardService {
                 Endpoint = %s
                 AllowedIPs = 0.0.0.0/0
                 PersistentKeepalive = 25
-                """.formatted(privateKey, ip, SERVER_PUBLIC_KEY, SERVER_PUBLIC_IP);
+                """.formatted(privateKey, ip, serverPublicKey, serverPublicIp);
     }
 
     // Runs a terminal command and returns what it prints.
