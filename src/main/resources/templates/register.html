@@ -1,25 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>RideVPN - Register</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RideVPN — Create account</title>
+  <link rel="icon" href="/images/ridevpn-icon.svg" th:href="@{/images/ridevpn-icon.svg}" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/styles.css" th:href="@{/css/styles.css}">
+  <script src="/js/ui.js" th:src="@{/js/ui.js}" defer></script>
 </head>
 <body>
+  <div class="app-shell" data-theme="dark">
+    <header class="site-header">
+      <a href="/" th:href="@{/}" class="brand" aria-label="RideVPN home">
+        <img class="brand-logo brand-dark" src="/images/ridevpn-logo.svg" th:src="@{/images/ridevpn-logo.svg}" alt="RideVPN" width="170" height="36">
+        <img class="brand-logo brand-light" src="/images/ridevpn-logo-light.svg" th:src="@{/images/ridevpn-logo-light.svg}" alt="RideVPN" width="170" height="36">
+      </a>
+      <nav class="header-nav" aria-label="Main navigation">
+        <a href="/" th:href="@{/}" class="header-action">Sign in <svg width="17" height="17" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="" aria-hidden="true" focusable="false"><path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></a>
+        <button class="header-action theme-toggle" type="button" aria-label="Switch to light mode" aria-pressed="false" title="Switch to light mode">
+          <svg class="tt__svg" viewBox="0 0 24 24" aria-hidden="true">
+      <mask id="ride-theme-bite">
+        <rect x="0" y="0" width="24" height="24" fill="#fff" />
+        <circle class="tt__bite" cx="24" cy="0" r="6.4" fill="#000" />
+      </mask>
+      <g class="tt__rays">
+        <line pathLength="1" style="--i: 0" x1="19.60" y1="12.00" x2="22.70" y2="12.00" />
+        <line pathLength="1" style="--i: 1" x1="17.37" y1="17.37" x2="19.57" y2="19.57" />
+        <line pathLength="1" style="--i: 2" x1="12.00" y1="19.60" x2="12.00" y2="22.70" />
+        <line pathLength="1" style="--i: 3" x1="6.63" y1="17.37" x2="4.43" y2="19.57" />
+        <line pathLength="1" style="--i: 4" x1="4.40" y1="12.00" x2="1.30" y2="12.00" />
+        <line pathLength="1" style="--i: 5" x1="6.63" y1="6.63" x2="4.43" y2="4.43" />
+        <line pathLength="1" style="--i: 6" x1="12.00" y1="4.40" x2="12.00" y2="1.30" />
+        <line pathLength="1" style="--i: 7" x1="17.37" y1="6.63" x2="19.57" y2="4.43" />
+      </g>
+      <circle class="tt__disc" cx="12" cy="12" r="5.4" mask="url(#ride-theme-bite)" />
+    </svg>
+        </button>
+      </nav>
+    </header>
 
-<div class="container">
-    <img th:src="@{/images/ridevpn-logo.png}" alt="logo">
+    <main class="auth-page">
+      <section class="auth-card" aria-labelledby="auth-title">
+        <div class="auth-card-heading">
+          <h1 id="auth-title">Create account</h1>
+          <p>Get started with RideVPN.</p>
+        </div>
 
-    <p th:if="${error}" th:text="${error}" style="color: lightcoral;"></p>
+        <p class="form-message form-error" th:if="${error}" th:text="${error}" role="alert"></p>
 
-    <form th:action="@{/register}" method="post">
-        <input type="text" name="username" placeholder="Username" required> <br>
-        <input type="email" name="email" placeholder="Email" required> <br>
-        <input type="password" name="password" placeholder="Password" required> <br>
+        <form class="auth-form" action="/register" th:action="@{/register}" method="post">
+          <div class="form-field">
+            <label for="username">Username</label>
+            <div class="input-shell">
+              <svg width="17" height="17" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="input-icon" aria-hidden="true" focusable="false"><path d="M7.5 0.875C5.49797 0.875 3.875 2.49797 3.875 4.5C3.875 6.15288 4.98124 7.54738 6.49373 7.98351C5.2997 8.12901 4.27557 8.55134 3.50407 9.31167C2.52216 10.2794 2.02502 11.72 2.02502 13.5999C2.02502 13.8623 2.23769 14.0749 2.50002 14.0749C2.76236 14.0749 2.97502 13.8623 2.97502 13.5999C2.97502 11.8799 3.42786 10.7206 4.17091 9.9883C4.91536 9.25463 6.02674 8.87499 7.49995 8.87499C8.97317 8.87499 10.0846 9.25463 10.8291 9.98831C11.5721 10.7206 12.025 11.8799 12.025 13.5999C12.025 13.8623 12.2376 14.0749 12.5 14.0749C12.7623 14.075 12.975 13.8623 12.975 13.6C12.975 11.72 12.4778 10.2794 11.4959 9.31166C10.7244 8.55135 9.70025 8.12903 8.50625 7.98352C10.0187 7.5474 11.125 6.15289 11.125 4.5C11.125 2.49797 9.50203 0.875 7.5 0.875ZM4.825 4.5C4.825 3.02264 6.02264 1.825 7.5 1.825C8.97736 1.825 10.175 3.02264 10.175 4.5C10.175 5.97736 8.97736 7.175 7.5 7.175C6.02264 7.175 4.825 5.97736 4.825 4.5Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+              <input id="username" name="username" type="text" autocomplete="username" placeholder="Your username" required>
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="email">Email</label>
+            <div class="input-shell">
+              <svg width="17" height="17" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="input-icon" aria-hidden="true" focusable="false"><path d="M1 2C0.447715 2 0 2.44772 0 3V12C0 12.5523 0.447715 13 1 13H14C14.5523 13 15 12.5523 15 12V3C15 2.44772 14.5523 2 14 2H1ZM1 3L14 3V3.92494C13.9174 3.92486 13.8338 3.94751 13.7589 3.99505L7.5 7.96703L1.24112 3.99505C1.16621 3.94751 1.0826 3.92486 1 3.92494V3ZM1 4.90797V12H14V4.90797L7.74112 8.87995C7.59394 8.97335 7.40606 8.97335 7.25888 8.87995L1 4.90797Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+              <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="password">Password</label>
+            <div class="input-shell password-field">
+              <svg width="17" height="17" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="input-icon" aria-hidden="true" focusable="false"><path d="M5 4.63601C5 3.76031 5.24219 3.1054 5.64323 2.67357C6.03934 2.24705 6.64582 1.9783 7.5014 1.9783C8.35745 1.9783 8.96306 2.24652 9.35823 2.67208C9.75838 3.10299 10 3.75708 10 4.63325V5.99999H5V4.63601ZM4 5.99999V4.63601C4 3.58148 4.29339 2.65754 4.91049 1.99307C5.53252 1.32329 6.42675 0.978302 7.5014 0.978302C8.57583 0.978302 9.46952 1.32233 10.091 1.99162C10.7076 2.65557 11 3.57896 11 4.63325V5.99999H12C12.5523 5.99999 13 6.44771 13 6.99999V13C13 13.5523 12.5523 14 12 14H3C2.44772 14 2 13.5523 2 13V6.99999C2 6.44771 2.44772 5.99999 3 5.99999H4ZM3 6.99999H12V13H3V6.99999Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+              <input id="password" name="password" type="password" autocomplete="new-password" placeholder="Enter your password" required>
+              <button class="password-toggle" type="button" aria-label="Show password" aria-pressed="false" aria-controls="password">
+                <span class="eye-open"><svg width="17" height="17" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="" aria-hidden="true" focusable="false"><path d="M7.5 11C4.80285 11 2.52952 9.62184 1.09622 7.50001C2.52952 5.37816 4.80285 4 7.5 4C10.1971 4 12.4705 5.37816 13.9038 7.50001C12.4705 9.62183 10.1971 11 7.5 11ZM7.5 3C4.30786 3 1.65639 4.70638 0.0760002 7.23501C-0.0253338 7.39715 -0.0253334 7.60288 0.0760014 7.76501C1.65639 10.2936 4.30786 12 7.5 12C10.6921 12 13.3436 10.2936 14.924 7.76501C15.0253 7.60288 15.0253 7.39715 14.924 7.23501C13.3436 4.70638 10.6921 3 7.5 3ZM7.5 9.5C8.60457 9.5 9.5 8.60457 9.5 7.5C9.5 6.39543 8.60457 5.5 7.5 5.5C6.39543 5.5 5.5 6.39543 5.5 7.5C5.5 8.60457 6.39543 9.5 7.5 9.5Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></span>
+                <span class="eye-closed" hidden><svg width="17" height="17" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="" aria-hidden="true" focusable="false"><path d="M14.7649 6.07596C14.9991 6.22231 15.0703 6.53079 14.9239 6.76495C14.4849 7.46743 13.9632 8.10645 13.3702 8.66305L14.5712 9.86406C14.7664 10.0593 14.7664 10.3759 14.5712 10.5712C14.3759 10.7664 14.0593 10.7664 13.8641 10.5712L12.6011 9.30817C11.805 9.90283 10.9089 10.3621 9.93375 10.651L10.383 12.3277C10.4544 12.5944 10.2961 12.8685 10.0294 12.94C9.76267 13.0115 9.4885 12.8532 9.41704 12.5865L8.95917 10.8775C8.48743 10.958 8.00036 10.9999 7.50001 10.9999C6.99965 10.9999 6.51257 10.958 6.04082 10.8775L5.58299 12.5864C5.51153 12.8532 5.23737 13.0115 4.97064 12.94C4.7039 12.8686 4.5456 12.5944 4.61706 12.3277L5.06625 10.651C4.09111 10.3621 3.19503 9.90282 2.3989 9.30815L1.1359 10.5712C0.940638 10.7664 0.624058 10.7664 0.428798 10.5712C0.233537 10.3759 0.233537 10.0593 0.428798 9.86405L1.62982 8.66303C1.03682 8.10643 0.515113 7.46742 0.0760677 6.76495C-0.0702867 6.53079 0.000898544 6.22231 0.235065 6.07596C0.469231 5.9296 0.777703 6.00079 0.924058 6.23496C1.40354 7.00213 1.989 7.68057 2.66233 8.2427C2.67315 8.25096 2.6837 8.25972 2.69397 8.26898C4.00897 9.35527 5.65537 9.99991 7.50001 9.99991C10.3078 9.99991 12.6564 8.5063 14.076 6.23495C14.2223 6.00079 14.5308 5.9296 14.7649 6.07596Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></span>
+              </button>
+            </div>
+          </div>
+          <button class="primary-button" type="submit">Create account <svg width="17" height="17" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="" aria-hidden="true" focusable="false"><path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg></button>
+        </form>
 
-        <button type="submit">Register</button>
-    </form>
-</div>
-
+        <p class="auth-footer">Already have an account? <a href="/" th:href="@{/}">Sign in</a></p>
+      </section>
+    </main>
+  </div>
 </body>
 </html>
