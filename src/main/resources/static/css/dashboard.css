@@ -1,0 +1,63 @@
+/* Dashboard page only. */
+.dashboard { display: grid; grid-template-columns: 1fr 240px; gap: 40px; width: min(100% - 64px, 1120px); margin: 40px auto 56px; align-items: start; }
+
+/* Map */
+.map { position: relative; }
+.map-image { display: block; width: 100%; height: auto; }
+.map-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+/* Server dot on the map */
+.pin-server { fill: var(--muted); }
+.pin-flash { fill: none; stroke: var(--text); stroke-width: 2; opacity: 0; transform-box: fill-box; transform-origin: center; }
+
+/* Label next to the dot (left and top are percentages of the map) */
+.map-label { position: absolute; left: 31.5%; top: 44.3%; font-size: 12px; color: var(--muted); white-space: nowrap; }
+
+/* Connecting: the dot blinks */
+.app-shell[data-status='connecting'] .pin-server { fill: var(--text); animation: blink 500ms infinite; }
+
+/* Connected: the dot is solid and flashes rings around it */
+.app-shell[data-status='connected'] .pin-server { fill: var(--text); }
+.app-shell[data-status='connected'] .map-label { color: var(--text); }
+.app-shell[data-status='connected'] .pin-flash { animation: flash 1.6s ease-out infinite; }
+.app-shell[data-status='connected'] .flash-2 { animation-delay: 800ms; }
+
+@keyframes blink { 50% { opacity: .2; } }
+@keyframes flash { from { transform: scale(1); opacity: 1; } to { transform: scale(4); opacity: 0; } }
+
+/* Bar under the map */
+.connect-bar { display: flex; align-items: center; gap: 32px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); }
+.status { display: flex; align-items: center; gap: 10px; min-width: 220px; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.status-title { font-size: 15px; font-weight: 500; }
+.status-text { color: var(--muted); font-size: 13px; }
+.app-shell[data-status='connecting'] .status-dot { background: var(--text); animation: blink 500ms infinite; }
+.app-shell[data-status='connected'] .status-dot { background: var(--text); }
+
+.numbers { display: flex; gap: 32px; margin-left: auto; }
+.numbers span { display: block; color: var(--muted); font-size: 12px; }
+.numbers b { font-weight: 500; }
+.connect-button { width: 160px; min-height: 42px; }
+.connect-button.disconnect { background: transparent; color: var(--text); border-color: var(--field-border); }
+
+/* Server list */
+.server-list h2 { margin-bottom: 8px; font-size: 13px; font-weight: 500; color: var(--muted); }
+.server { display: flex; justify-content: space-between; width: 100%; padding: 11px 0; border: 0; border-bottom: 1px solid var(--border); background: transparent; color: var(--text); text-align: left; }
+.server.selected .server-name { font-weight: 500; }
+.server-code { color: var(--muted); font-size: 12px; }
+
+@media (max-width: 900px) {
+  .dashboard { grid-template-columns: 1fr; gap: 32px; }
+  .connect-bar { flex-wrap: wrap; gap: 20px; }
+  .numbers { margin-left: 0; }
+  .connect-button { width: 100%; }
+}
+@media (max-width: 760px) {
+  .dashboard { width: calc(100% - 32px); margin-top: 24px; }
+  .map-label { font-size: 10px; }
+}
+
+.connect-bar { flex-wrap: wrap; }
+.status { flex: 1 1 220px; }
+.status-dot { flex-shrink: 0; }
+@media (max-width: 560px) { .config-form { width: 100%; } }

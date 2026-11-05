@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RideVPN — Dashboard</title>
+  <link rel="icon" href="/images/ridevpn-icon.svg" th:href="@{/images/ridevpn-icon.svg}" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/styles.css" th:href="@{/css/styles.css}">
+  <link rel="stylesheet" href="/css/app.css" th:href="@{/css/app.css}">
+  <link rel="stylesheet" href="/css/dashboard.css" th:href="@{/css/dashboard.css}">
+  <script src="/js/app.js" th:src="@{/js/app.js}" defer></script>
+  <script src="/js/dashboard.js" th:src="@{/js/dashboard.js}" defer></script>
+</head>
+<body>
+  <div class="app-shell" data-theme="dark" data-status="disconnected">
+    <header class="site-header">
+      <a href="/dashboard" th:href="@{/dashboard}" class="brand" aria-label="RideVPN home">
+        <img class="brand-logo brand-dark" src="/images/ridevpn-logo.svg" th:src="@{/images/ridevpn-logo.svg}" alt="RideVPN" width="170" height="36">
+        <img class="brand-logo brand-light" src="/images/ridevpn-logo-light.svg" th:src="@{/images/ridevpn-logo-light.svg}" alt="RideVPN" width="170" height="36">
+      </a>
+      <nav class="header-nav" aria-label="Main navigation">
+        <a href="/dashboard" th:href="@{/dashboard}" class="nav-link active-nav">Dashboard</a>
+        <a href="/settings" th:href="@{/settings}" class="nav-link">Settings</a>
+        <a href="/account" th:href="@{/account}" class="nav-link">Account</a>
+        <form class="logout-form" th:action="@{/logout}" method="post"><button type="submit" class="header-action">Sign out</button></form>
+        <button class="header-action theme-toggle" type="button" aria-label="Switch to light mode" aria-pressed="false" title="Switch to light mode">
+          <svg class="tt__svg" viewBox="0 0 24 24" aria-hidden="true">
+            <mask id="ride-theme-bite">
+              <rect x="0" y="0" width="24" height="24" fill="#fff" />
+              <circle class="tt__bite" cx="24" cy="0" r="6.4" fill="#000" />
+            </mask>
+            <g class="tt__rays">
+              <line pathLength="1" style="--i: 0" x1="19.60" y1="12.00" x2="22.70" y2="12.00" />
+              <line pathLength="1" style="--i: 1" x1="17.37" y1="17.37" x2="19.57" y2="19.57" />
+              <line pathLength="1" style="--i: 2" x1="12.00" y1="19.60" x2="12.00" y2="22.70" />
+              <line pathLength="1" style="--i: 3" x1="6.63" y1="17.37" x2="4.43" y2="19.57" />
+              <line pathLength="1" style="--i: 4" x1="4.40" y1="12.00" x2="1.30" y2="12.00" />
+              <line pathLength="1" style="--i: 5" x1="6.63" y1="6.63" x2="4.43" y2="4.43" />
+              <line pathLength="1" style="--i: 6" x1="12.00" y1="4.40" x2="12.00" y2="1.30" />
+              <line pathLength="1" style="--i: 7" x1="17.37" y1="6.63" x2="19.57" y2="4.43" />
+            </g>
+            <circle class="tt__disc" cx="12" cy="12" r="5.4" mask="url(#ride-theme-bite)" />
+          </svg>
+        </button>
+      </nav>
+    </header>
+
+    <!-- Links for small phones -->
+    <nav class="mobile-nav">
+      <a href="/dashboard" th:href="@{/dashboard}" class="active-nav">Dashboard</a>
+      <a href="/settings" th:href="@{/settings}">Settings</a>
+      <a href="/account" th:href="@{/account}">Account</a>
+    </nav>
+
+    <main class="dashboard">
+      <!-- Left side: the map and the connect bar -->
+      <section class="map-card">
+        <div class="map">
+          <img class="map-image" src="/images/world-map.svg" th:src="@{/images/world-map.svg}" alt="World map">
+
+          <!-- The server dot. Numbers match the map image size (1600 x 938). -->
+          <svg class="map-overlay" viewBox="0 0 1600 938" aria-hidden="true">
+            <circle class="pin-flash" cx="456" cy="432" r="10" />
+            <circle class="pin-flash flash-2" cx="456" cy="432" r="10" />
+            <circle class="pin-server" cx="456" cy="432" r="10" />
+          </svg>
+
+          <p class="map-label">N. Virginia <span>us-east-1</span></p>
+        </div>
+
+        <div class="connect-bar">
+          <div class="status">
+            <span class="status-dot"></span>
+            <div>
+              <p class="status-title">Set up your VPN</p>
+              <p class="status-text" role="status">Download a config, then import it into WireGuard.</p>
+            </div>
+          </div>
+
+          <div class="numbers">
+            <p><span>Assigned IP</span><b class="vpn-ip" th:text="${vpnIp ?: '—'}">—</b></p>
+            <p><span>Session</span><b class="session-time">In WireGuard</b></p>
+            <p><span>Ping</span><b>—</b></p>
+          </div>
+
+          <form class="config-form" th:action="@{/api/config}" method="post">
+            <button class="primary-button connect-button" type="submit">Download config</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Right side: list of server locations -->
+      <aside class="server-list">
+        <h2>Locations</h2><p class="server-note">Import the .conf file into WireGuard and activate it there. Downloading again replaces your previous key. Live connection status is available in WireGuard.</p>
+
+        <button class="server selected" type="button">
+          <span class="server-name">N. Virginia</span>
+          <span class="server-code">us-east-1</span>
+        </button>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>

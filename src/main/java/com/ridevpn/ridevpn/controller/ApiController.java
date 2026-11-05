@@ -2,6 +2,8 @@ package com.ridevpn.ridevpn.controller;
 
 import com.ridevpn.ridevpn.service.WireGuardService;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,8 +26,23 @@ public class ApiController {
     }
 
     // Downloads config file for the client to use
-    @GetMapping(value = "/config", produces = MediaType.TEXT_PLAIN_VALUE)
-    public String config(Principal principal) throws Exception {
-        return wireGuardService.createConfig(principal.getName());
+    @PostMapping(value = "/config", produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity<String> config(Principal principal) {
+        try {
+            return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=\"ridevpn.conf\"")
+                .header("Cache-Control", "no-store")
+                .body(wireGuardService.createConfig(principal.getName()));
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return configUnavailable();
+        } catch (java.io.IOException | IllegalStateException e) {
+            return configUnavailable();
+        }
+    }
+
+    private ResponseEntity<String> configUnavailable() {
+        return ResponseEntity.status(503).header("Cache-Control", "no-store")
+            .body("Could not generate your VPN config. Please try again later.");
     }
 }
