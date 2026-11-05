@@ -32,6 +32,6 @@ public class RegisterController {
         }
 
         userService.register(username, email, password);
-        return "redirect:/";
+        return "redirect:/?registered";
     }
 }

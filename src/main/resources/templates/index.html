@@ -6,6 +6,7 @@
   <title>RideVPN — Sign in</title>
   <link rel="icon" href="/images/ridevpn-icon.svg" th:href="@{/images/ridevpn-icon.svg}" type="image/svg+xml">
   <link rel="stylesheet" href="/css/styles.css" th:href="@{/css/styles.css}">
+  <script src="/js/app.js" th:src="@{/js/app.js}" defer></script>
   <script src="/js/ui.js" th:src="@{/js/ui.js}" defer></script>
 </head>
 <body>
@@ -46,7 +47,9 @@
           <p>Sign in to your RideVPN account.</p>
         </div>
 
-        <p class="form-message" th:if="${message}" th:text="${message}" role="status"></p>
+        <p class="form-message form-error" th:if="${param.error}" role="alert">Incorrect username or password.</p>
+        <p class="form-message" th:if="${param.logout}" role="status">You have been signed out.</p>
+        <p class="form-message" th:if="${param.registered}" role="status">Account created. Sign in to continue.</p>
 
         <form class="auth-form" action="/login" th:action="@{/login}" method="post">
           <div class="form-field">

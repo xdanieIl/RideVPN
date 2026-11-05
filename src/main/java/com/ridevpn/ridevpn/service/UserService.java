@@ -34,4 +34,30 @@ public class UserService {
         }
         return passwordEncoder.matches(password, user.get().getPasswordHash());
     }
+
+
+    public void updateEmail(String username, String email) {
+        String value = email.trim();
+        if (value.length() > 254 || !value.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
+            throw new IllegalArgumentException("Enter a valid email address.");
+        }
+        User user = userRepository.findByUsername(username).orElseThrow();
+        user.setEmail(value);
+        userRepository.saveAndFlush(user);
+    }
+
+    public void updatePassword(String username, String currentPassword, String newPassword, String confirmation) {
+        User user = userRepository.findByUsername(username).orElseThrow();
+        if (!passwordEncoder.matches(currentPassword, user.getPasswordHash())) {
+            throw new IllegalArgumentException("Current password is incorrect.");
+        }
+        if (!newPassword.equals(confirmation)) {
+            throw new IllegalArgumentException("New passwords do not match.");
+        }
+        if (newPassword.length() < 12 || newPassword.getBytes(java.nio.charset.StandardCharsets.UTF_8).length > 72) {
+            throw new IllegalArgumentException("Use at least 12 characters and at most 72 UTF-8 bytes for your password.");
+        }
+        user.setPasswordHash(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
 }

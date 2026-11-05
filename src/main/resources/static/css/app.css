@@ -1,0 +1,111 @@
+/* Shared look for every page after login. Black and white for now. */
+.app-shell {
+  --background: #000000;
+  --panel: #0d0d0d;
+  --panel-deep: #070707;
+  --border: #262626;
+  --text: #ffffff;
+  --muted: #8c8c8c;
+  --blue: #ffffff;
+  --gradient-start: #000000;
+  --gradient-end: #111111;
+  --input: #0a0a0a;
+  --field-border: #333333;
+  --hover-bg: #1a1a1a;
+  --selected-bg: #1a1a1a;
+  --selected-border: #ffffff;
+  --icon-bg: #161616;
+  --icon-border: #333333;
+  --icon-color: #d9d9d9;
+  --secondary-bg: #ffffff05;
+  --secondary-hover: #ffffff10;
+  --row-bg: #0d0d0d;
+}
+
+.app-shell[data-theme='light'] {
+  --background: #ffffff;
+  --panel: #ffffff;
+  --panel-deep: #f5f5f5;
+  --border: #dddddd;
+  --text: #000000;
+  --muted: #6b6b6b;
+  --blue: #000000;
+  --gradient-start: #ffffff;
+  --gradient-end: #f2f2f2;
+  --input: #fafafa;
+  --field-border: #cccccc;
+  --hover-bg: #f0f0f0;
+  --selected-bg: #f0f0f0;
+  --selected-border: #000000;
+  --icon-bg: #f2f2f2;
+  --icon-border: #cccccc;
+  --icon-color: #333333;
+  --secondary-bg: #ffffff;
+  --secondary-hover: #f0f0f0;
+  --row-bg: #ffffff;
+}
+
+/* No dotted background, and a grey logo while we are black and white */
+.app-shell::before { display: none; }
+.brand-logo { filter: grayscale(1); }
+
+/* Plain button instead of the gradient */
+.primary-button { background: var(--text); color: var(--background); border-color: var(--text); box-shadow: none; font-weight: 500; }
+.primary-button:hover { animation: none; transform: none; box-shadow: none; opacity: .85; }
+
+
+/* Header links */
+.nav-link:hover { color: var(--text); }
+.active-nav { border-color: transparent; background: transparent; color: var(--text); }
+
+/* Pages like Settings and Account */
+.page { width: min(100% - 64px, 720px); margin: 40px auto 56px; }
+.page-title h1 { font-size: 28px; letter-spacing: -0.8px; }
+.page-title p { margin-top: 6px; color: var(--muted); }
+.section { margin-top: 40px; }
+.section h2 { padding-bottom: 10px; border-bottom: 1px solid var(--border); color: var(--muted); font-size: 13px; font-weight: 500; }
+
+/* One row in a list: words on the left, a control on the right */
+.row { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 16px 0; border-bottom: 1px solid var(--border); }
+.row b { display: block; font-weight: 500; }
+.row span { color: var(--muted); font-size: 13px; }
+
+/* On/off switch made from a checkbox */
+.switch { appearance: none; position: relative; flex-shrink: 0; width: 40px; height: 22px; margin: 0; border: 1px solid var(--field-border); border-radius: 999px; background: var(--input); cursor: pointer; }
+.switch::before { content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--muted); transition: left 160ms; }
+.switch:checked { border-color: var(--text); background: var(--text); }
+.switch:checked::before { left: 20px; background: var(--background); }
+
+/* Dropdowns and plain inputs */
+.select { min-height: 38px; padding: 0 12px; border: 1px solid var(--field-border); border-radius: 8px; background: var(--input); color: var(--text); font: inherit; }
+.page .form-field input { padding-left: 14px; }
+.page .form-field input:disabled { color: var(--muted); }
+.fields { display: grid; gap: 16px; margin-top: 20px; }
+
+/* Buttons */
+.page .primary-button { width: auto; min-height: 40px; padding: 8px 18px; }
+.outline-button { min-height: 40px; padding: 8px 18px; border: 1px solid var(--field-border); border-radius: 8px; background: transparent; color: var(--text); font-weight: 500; }
+.outline-button:hover { border-color: var(--text); }
+.buttons { display: flex; gap: 10px; margin-top: 20px; }
+
+/* Page links for small phones (hidden on bigger screens) */
+.mobile-nav { display: none; gap: 20px; width: calc(100% - 32px); margin: 0 auto; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.mobile-nav a { color: var(--muted); }
+.mobile-nav a.active-nav { color: var(--text); }
+
+@media (max-width: 760px) {
+  .header-nav .nav-link { padding: 8px 6px; }
+  .page { width: calc(100% - 32px); margin-top: 24px; }
+  .row { flex-wrap: wrap; }
+}
+@media (max-width: 560px) {
+  .header-nav .nav-link { display: none; }
+  .mobile-nav { display: flex; }
+}
+
+.logout-form { margin: 0; }
+.logout-form button { font: inherit; background: transparent; cursor: pointer; }
+button:disabled, input:disabled, select:disabled { opacity: .5; cursor: not-allowed; }
+.server-note { color: var(--muted); font-size: 13px; line-height: 1.6; margin: 12px 0 20px; }
+.config-form { flex-shrink: 0; }
+.settings-feedback { margin-top: 20px; color: var(--muted); }

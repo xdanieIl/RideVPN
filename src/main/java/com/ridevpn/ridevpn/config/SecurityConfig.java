@@ -17,12 +17,13 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/**").authenticated()
-                .anyRequest().permitAll()
+                .requestMatchers("/", "/login", "/register", "/error", "/css/**", "/js/**", "/images/**", "/fonts/**").permitAll()
+                .anyRequest().authenticated()
             )
             .httpBasic(Customizer.withDefaults())
-            .formLogin(form -> form.disable())
-            .csrf(csrf -> csrf.disable());
+            .formLogin(form -> form.loginPage("/").loginProcessingUrl("/login")
+                .defaultSuccessUrl("/dashboard", true).failureUrl("/?error").permitAll())
+            .logout(logout -> logout.logoutSuccessUrl("/?logout").permitAll());
 
         return http.build();
     }
