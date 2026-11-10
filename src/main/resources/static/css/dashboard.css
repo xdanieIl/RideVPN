@@ -19,8 +19,8 @@
 /* Connected: the dot is solid and flashes rings around it */
 .app-shell[data-status='connected'] .pin-server { fill: var(--text); }
 .app-shell[data-status='connected'] .map-label { color: var(--text); }
-.app-shell[data-status='connected'] .pin-flash { animation: flash 1.6s ease-out infinite; }
-.app-shell[data-status='connected'] .flash-2 { animation-delay: 800ms; }
+.pin-flash { animation: flash 1.6s ease-out infinite; }
+.flash-2 { animation-delay: 800ms; }
 
 @keyframes blink { 50% { opacity: .2; } }
 @keyframes flash { from { transform: scale(1); opacity: 1; } to { transform: scale(4); opacity: 0; } }
