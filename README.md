@@ -14,8 +14,8 @@ forms use Spring Security sessions and CSRF protection; sign-out is a POST.
 
 ## Portal
 
-- Dashboard: supplied map layout and an authenticated WireGuard configuration download.
-  Import `ridevpn.conf` into your WireGuard client and activate it there. Downloading
+- Dashboard: skeleton map layout with a Download client placeholder. Clicking it shows a coming-soon message without calling the VPN backend.
+  The separate config API remains available to clients. Downloading
   a new config replaces the previous peer key. Assigned IP is not live connection status.
 - Account: real username, email, membership date, email updates, and password changes
   with current-password verification. Self-service account deletion is disabled pending

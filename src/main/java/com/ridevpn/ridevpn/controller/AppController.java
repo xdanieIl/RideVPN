@@ -25,9 +25,7 @@ public class AppController {
     }
 
     @GetMapping("/dashboard")
-    public String dashboard(Principal principal, Model model) {
-        var user = users.findByUsername(principal.getName()).orElseThrow();
-        model.addAttribute("vpnIp", user.getVpnIp());
+    public String dashboard() {
         return "dashboard";
     }
 

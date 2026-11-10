@@ -60,4 +60,4 @@
 .connect-bar { flex-wrap: wrap; }
 .status { flex: 1 1 220px; }
 .status-dot { flex-shrink: 0; }
-@media (max-width: 560px) { .config-form { width: 100%; } }
+@media (max-width: 560px) { .client-download { width: 100%; } }
