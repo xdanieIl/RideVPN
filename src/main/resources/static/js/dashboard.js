@@ -32,3 +32,20 @@
   drawDaylight();
   setInterval(drawDaylight, 60000);
 })();
+
+const mapTime = document.querySelector('.map-time');
+const virginiaTime = new Intl.DateTimeFormat('en-US', {
+  timeZone: 'America/New_York',
+  hour: 'numeric',
+  minute: '2-digit',
+  timeZoneName: 'short'
+});
+
+function updateMapTime() {
+  const now = new Date();
+  mapTime.textContent = virginiaTime.format(now);
+  mapTime.dateTime = now.toISOString();
+}
+
+updateMapTime();
+setInterval(updateMapTime, 1000);

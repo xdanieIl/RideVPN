@@ -75,3 +75,11 @@
 @media (max-width: 560px) { .client-download { width: 100%; } }
 
 @media (prefers-reduced-motion: reduce) { .pin-flash, .pin-server, .status-dot { animation: none !important; } }
+
+.map-time { margin-left: 6px; font-variant-numeric: tabular-nums; }
+.server:is(:hover, :focus-visible) { color: var(--text); background: var(--hover-bg); }
+.dashboard:has(.server:is(:hover, :focus-visible)) .pin-server {
+  fill: var(--text);
+  filter: drop-shadow(0 0 8px var(--text));
+}
+.dashboard:has(.server:is(:hover, :focus-visible)) .map-label { color: var(--text); }
