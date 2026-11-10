@@ -59,6 +59,7 @@
           <img class="map-image" src="/images/world-map.svg" th:src="@{/images/world-map.svg}" alt="World map">
 
           <!-- The server dot. Numbers match the map image size (1600 x 938). -->
+          <canvas class="map-daylight" width="160" height="94" aria-hidden="true"></canvas>
           <svg class="map-overlay" viewBox="0 0 1600 938" aria-hidden="true">
             <circle class="pin-flash" cx="456" cy="432" r="10" />
             <circle class="pin-flash flash-2" cx="456" cy="432" r="10" />
@@ -73,18 +74,17 @@
             <span class="status-dot"></span>
             <div>
               <p class="status-title">Not connected</p>
-              <p class="status-text" role="status"></p>
             </div>
           </div>
 
           <div class="numbers">
             <p><span>Assigned IP</span><b class="vpn-ip">1.1.1.1</b></p>
             <p><span>Session</span><b class="session-time">00:00:00</b></p>
-            <p><span>Ping</span><b>—</b></p>
+            <p><span>Ping</span><b class="ping-value">—</b></p>
           </div>
 
           <div class="client-download">
-            <button class="primary-button connect-button" type="button">Download client</button>
+            <button class="primary-button connect-button" type="button" aria-disabled="true">Download client</button>
           </div>
         </div>
       </section>

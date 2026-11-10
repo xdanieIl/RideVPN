@@ -4,14 +4,26 @@
 /* Map */
 .map { position: relative; }
 .map-image { display: block; width: 100%; height: auto; }
-.map-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+.map-image { opacity: .65; }
+.map-daylight {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  mask: url("../images/world-map.svg") center / 100% 100% no-repeat;
+}
+
+.app-shell[data-theme='light'] .map-daylight { filter: invert(1); }
+
+.map-overlay { z-index: 1; position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
 /* Server dot on the map */
 .pin-server { fill: var(--muted); }
 .pin-flash { fill: none; stroke: var(--text); stroke-width: 2; opacity: 0; transform-box: fill-box; transform-origin: center; }
 
 /* Label next to the dot (left and top are percentages of the map) */
-.map-label { position: absolute; left: 31.5%; top: 44.3%; font-size: 12px; color: var(--muted); white-space: nowrap; }
+.map-label { position: absolute; z-index: 1; left: 31.5%; top: 44.3%; font-size: 12px; color: var(--muted); white-space: nowrap; }
 
 /* Connecting: the dot blinks */
 .app-shell[data-status='connecting'] .pin-server { fill: var(--text); animation: blink 500ms infinite; }
@@ -61,3 +73,5 @@
 .status { flex: 1 1 220px; }
 .status-dot { flex-shrink: 0; }
 @media (max-width: 560px) { .client-download { width: 100%; } }
+
+@media (prefers-reduced-motion: reduce) { .pin-flash, .pin-server, .status-dot { animation: none !important; } }
