@@ -21,6 +21,12 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
             .httpBasic(Customizer.withDefaults())
+            // The desktop client sends its username and password on every request (no cookie),
+            // so it can't be hit by CSRF. Only browser requests need the CSRF token.
+            .csrf(csrf -> csrf.ignoringRequestMatchers(request -> {
+                String auth = request.getHeader("Authorization");
+                return auth != null && auth.startsWith("Basic ");
+            }))
             .formLogin(form -> form.loginPage("/").loginProcessingUrl("/login")
                 .defaultSuccessUrl("/dashboard", true).failureUrl("/?error").permitAll())
             .logout(logout -> logout.logoutSuccessUrl("/?logout").permitAll());
