@@ -108,4 +108,5 @@
 button:disabled, input:disabled, select:disabled { opacity: .5; cursor: not-allowed; }
 .server-note { color: var(--muted); font-size: 13px; line-height: 1.6; margin: 12px 0 20px; }
 .client-download { flex-shrink: 0; }
+a.primary-button { text-decoration: none; }
 .settings-feedback { margin-top: 20px; color: var(--muted); }

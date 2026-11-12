@@ -78,13 +78,13 @@
           </div>
 
           <div class="numbers">
-            <p><span>Assigned IP</span><b class="vpn-ip">1.1.1.1</b></p>
+            <p><span>Assigned IP</span><b class="vpn-ip">—</b></p>
             <p><span>Session</span><b class="session-time">00:00:00</b></p>
             <p><span>Ping</span><b class="ping-value">—</b></p>
           </div>
 
           <div class="client-download">
-            <button class="primary-button connect-button" type="button" aria-disabled="true">Download client</button>
+            <a class="primary-button connect-button" th:href="@{/download/client}" download>Download client</a>
           </div>
         </div>
       </section>

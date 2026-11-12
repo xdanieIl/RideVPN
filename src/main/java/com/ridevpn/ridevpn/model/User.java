@@ -36,6 +36,10 @@ public class User {
     @Column(name = "wg_public_key")
     private String wgPublicKey;
 
+    // When the current VPN session started. Empty when not connected.
+    @Column(name = "connected_since")
+    private Instant connectedSince;
+
     protected User() {}
 
     public User(String username, String email, String passwordHash) {
@@ -95,5 +99,13 @@ public class User {
 
     public void setWgPublicKey(String wgPublicKey) {
         this.wgPublicKey = wgPublicKey;
+    }
+
+    public Instant getConnectedSince() {
+        return connectedSince;
+    }
+
+    public void setConnectedSince(Instant connectedSince) {
+        this.connectedSince = connectedSince;
     }
 }

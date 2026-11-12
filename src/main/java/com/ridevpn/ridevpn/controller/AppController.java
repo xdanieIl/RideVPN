@@ -6,7 +6,14 @@ import java.security.Principal;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,15 +25,32 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class AppController {
     private final UserRepository users;
     private final UserService userService;
+    private final String installerPath;
 
-    public AppController(UserRepository users, UserService userService) {
+    public AppController(UserRepository users, UserService userService,
+            @Value("${ridevpn.client-installer}") String installerPath) {
         this.users = users;
         this.userService = userService;
+        this.installerPath = installerPath;
     }
 
     @GetMapping("/dashboard")
     public String dashboard() {
         return "dashboard";
+    }
+
+    // Downloads RideVPN-Setup.exe - the file lives in /opt/ridevpn/client on the server
+    @GetMapping("/download/client")
+    public ResponseEntity<Resource> downloadClient() {
+        Resource installer = new FileSystemResource(installerPath);
+        if (!installer.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .header(HttpHeaders.CONTENT_DISPOSITION,
+                ContentDisposition.attachment().filename("RideVPN-Setup.exe").build().toString())
+            .body(installer);
     }
 
     @GetMapping("/settings")

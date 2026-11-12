@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -114,5 +115,30 @@ public class WireGuardService {
             throw new IOException("Command failed: " + String.join(" ", command) + " -> " + output);
         }
         return output;
+    }
+
+    // Returns true if the user's client talked to the server in the last 3 minutes.
+    // Also saves when the session started (connected_since) and clears it on disconnect.
+    // synchronized so it can't save over a new key that createConfig is saving at the same time.
+    public synchronized boolean isConnected(String username) throws IOException, InterruptedException {
+        User user = userRepository.findByUsername(username).orElseThrow();
+        boolean connected = false;
+
+        String dump = runCommand(null, "sudo", "-n", "wg", "show", "wg0", "latest-handshakes");
+        for (String line : dump.split("\n")) {
+            String[] cols = line.split("\t"); // public key, last handshake time
+            if (cols[0].equals(user.getWgPublicKey())) {
+                connected = System.currentTimeMillis() / 1000 - Long.parseLong(cols[1]) < 180;
+            }
+        }
+
+        if (connected && user.getConnectedSince() == null) {
+            user.setConnectedSince(Instant.now());
+            userRepository.save(user);
+        } else if (!connected && user.getConnectedSince() != null) {
+            user.setConnectedSince(null);
+            userRepository.save(user);
+        }
+        return connected;
     }
 }

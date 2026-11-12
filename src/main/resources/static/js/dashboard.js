@@ -49,3 +49,31 @@ function updateMapTime() {
 
 updateMapTime();
 setInterval(updateMapTime, 1000);
+
+// Connection status bar: asks the server every 5 seconds if this user's VPN is connected
+let connectedAt = null;
+
+async function refreshStatus() {
+  const start = performance.now();
+  const status = await (await fetch('/api/status')).json();
+  const ping = Math.round(performance.now() - start);
+
+  // The server stores when the session started, so the timer survives page reloads
+  connectedAt = status.connected ? Date.now() - status.sessionSeconds * 1000 : null;
+
+  document.querySelector('.app-shell').dataset.status = status.connected ? 'connected' : 'disconnected';
+  document.querySelector('.status-title').textContent = status.connected ? 'Connected' : 'Not connected';
+  document.querySelector('.vpn-ip').textContent = status.connected ? status.ip : '—';
+  document.querySelector('.ping-value').textContent = status.connected ? ping + ' ms' : '—';
+}
+
+function updateSession() {
+  const secs = connectedAt ? Math.floor((Date.now() - connectedAt) / 1000) : 0;
+  const pad = n => String(n).padStart(2, '0');
+  document.querySelector('.session-time').textContent =
+    `${pad(Math.floor(secs / 3600))}:${pad(Math.floor(secs / 60) % 60)}:${pad(secs % 60)}`;
+}
+
+refreshStatus();
+setInterval(refreshStatus, 5000);
+setInterval(updateSession, 1000);

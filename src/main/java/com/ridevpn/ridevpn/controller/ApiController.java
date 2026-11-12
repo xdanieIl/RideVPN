@@ -1,5 +1,7 @@
 package com.ridevpn.ridevpn.controller;
 
+import com.ridevpn.ridevpn.model.User;
+import com.ridevpn.ridevpn.repository.UserRepository;
 import com.ridevpn.ridevpn.service.WireGuardService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -9,15 +11,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
 public class ApiController {
 
     private final WireGuardService wireGuardService;
+    private final UserRepository userRepository;
 
-    public ApiController(WireGuardService wireGuardService) {
+    public ApiController(WireGuardService wireGuardService, UserRepository userRepository) {
         this.wireGuardService = wireGuardService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/me")
@@ -44,5 +51,19 @@ public class ApiController {
     private ResponseEntity<String> configUnavailable() {
         return ResponseEntity.status(503).header("Cache-Control", "no-store")
             .body("Could not generate your VPN config. Please try again later.");
+    }
+
+    // The dashboard hits this endpoint to get connection status of the logged in user
+    @GetMapping("/status")
+    public Map<String, Object> status(Principal principal) throws Exception {
+        boolean connected = wireGuardService.isConnected(principal.getName());
+        User user = userRepository.findByUsername(principal.getName()).orElseThrow();
+        long sessionSeconds = connected
+                ? Duration.between(user.getConnectedSince(), Instant.now()).getSeconds()
+                : 0;
+        return Map.of(
+                "connected", connected,
+                "ip", user.getVpnIp() + "",
+                "sessionSeconds", sessionSeconds);
     }
 }
